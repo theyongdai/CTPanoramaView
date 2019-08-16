@@ -70,7 +70,7 @@ import ImageIO
     private var prevLocation = CGPoint.zero
     private var prevBounds = CGRect.zero
 
-    private lazy var cameraNode: SCNNode = {
+    internal lazy var cameraNode: SCNNode = {
         let node = SCNNode()
         let camera = SCNCamera()
         node.camera = camera
@@ -291,11 +291,11 @@ import ImageIO
         let zoom = Double(pinchRec.scale)
         switch pinchRec.state {
         case .began:
-            startScale = cameraNode.camera!.yFov
+            startScale = Double(cameraNode.camera!.fieldOfView)
         case .changed:
             let fov = startScale / zoom
-            if fov > 20 && fov < 80 {
-                cameraNode.camera!.yFov = fov
+            if fov > 20 && fov < 180 {
+                cameraNode.camera!.fieldOfView = CGFloat(fov)
             }
         default:
             break
